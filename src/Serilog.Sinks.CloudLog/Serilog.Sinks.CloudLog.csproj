@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;net46;netstandard1.5;</TargetFrameworks>
+    <Authors>Anexia;Platform Solutions</Authors>
+    <Company>Anexia</Company>
+    <Product>CloudLog</Product>
+    <Version>0.1.0</Version>
+    <Description>CloudLog Serilog Sink</Description>
+    <Copyright>Anexia</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>
