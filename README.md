@@ -3,7 +3,7 @@ Serilog Sink for Anexia CloudLog
 
 ### Getting started
 
-To use the console sink, first install the [NuGet package](https://nuget.org/packages/Serilog.Sinks.CloudLog):
+To use this sink, first install the [NuGet package](https://nuget.org/packages/Serilog.Sinks.CloudLog):
 
 ```powershell
 Install-Package Serilog.Sinks.CloudLog
