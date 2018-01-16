@@ -5,13 +5,14 @@ using Serilog.Formatting.Json;
 using Serilog.Sinks.PeriodicBatching;
 using Anexia.BDP.CloudLog;
 using System.IO;
+using Serilog.Sinks.CloudLog.Formatting;
 
 namespace Serilog.Sinks.CloudLog
 {
     public class CloudLogSink : PeriodicBatchingSink
     {
         private Client client;
-        private JsonFormatter formatter;
+        private CloudLogJsonFormatter formatter;
 
         const int batchSize = 50;
         const int period = 1;
@@ -23,7 +24,7 @@ namespace Serilog.Sinks.CloudLog
             string keyFile) : base(batchSize, TimeSpan.FromSeconds(period))
         {
             this.client = new Client(index, caFile, certFile, keyFile);
-            this.formatter = new JsonFormatter(closingDelimiter: null, renderMessage: true);
+            Init();
         }
 
         public CloudLogSink(
@@ -31,7 +32,13 @@ namespace Serilog.Sinks.CloudLog
             string token) : base(batchSize, TimeSpan.FromSeconds(period))
         {
             this.client = new Client(index, token);
-            this.formatter = new JsonFormatter(closingDelimiter: null, renderMessage: true);
+            Init();
+        }
+
+        private void Init()
+        {
+            this.formatter = new CloudLogJsonFormatter();
+            this.client.SetClientType("dotnet-client-serilog");
         }
 
         protected override void EmitBatch(IEnumerable<LogEvent> events)
