@@ -13,7 +13,7 @@ Then enable the sink using `WriteTo.CloudLog()`:
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.CloudLog(index: "index-name", caFile: "C:/private/cloudlog-ca.pem", caFile: "C:/private/cloudlog-client.pem", caFile: "C:/private/cloudlog-client.key")
+    .WriteTo.CloudLog(index: "index-name", caFile: "C:/private/cloudlog-ca.pem", certFile: "C:/private/cloudlog-client.pem", keyFile: "C:/private/cloudlog-client.key")
     .CreateLogger();
     
 Log.Information("Hello CloudLog!");
