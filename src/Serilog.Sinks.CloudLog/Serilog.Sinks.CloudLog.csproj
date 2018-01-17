@@ -5,10 +5,14 @@
     <Authors>Anexia;Platform Solutions</Authors>
     <Company>Anexia</Company>
     <Product>CloudLog</Product>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Description>CloudLog Serilog Sink</Description>
     <Copyright>Anexia</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://secure.gravatar.com/avatar/9d6ad2f4979c38de18f29cb2ba8c4c3e?s=256</PackageIconUrl>
+    <PackageProjectUrl>https://www.anexia-it.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anexia-it/serilog-sinks-cloudlog</RepositoryUrl>
+    <PackageTags>cloudlog serilog logging</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
