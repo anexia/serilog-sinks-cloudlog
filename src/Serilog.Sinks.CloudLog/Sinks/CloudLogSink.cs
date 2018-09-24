@@ -21,9 +21,10 @@ namespace Serilog.Sinks.CloudLog
             string index,
             string caFile,
             string certFile,
-            string keyFile) : base(batchSize, TimeSpan.FromSeconds(period))
+            string keyFile,
+            string keyPassword="") : base(batchSize, TimeSpan.FromSeconds(period))
         {
-            this.client = new Client(index, caFile, certFile, keyFile);
+            this.client = new Client(index, caFile, certFile, keyFile, keyPassword);
             Init();
         }
 

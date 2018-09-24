@@ -22,13 +22,15 @@ namespace Serilog
             string index,
             string caFile,
             string certFile,
-            string keyFile)
+            string keyFile,
+            string keyPassword="")
         {
             var sink = new CloudLogSink(
                 index,
                 caFile,
                 certFile,
-                keyFile);
+                keyFile,
+                keyPassword);
             return loggerConfiguration.Sink(sink);
         }
 
