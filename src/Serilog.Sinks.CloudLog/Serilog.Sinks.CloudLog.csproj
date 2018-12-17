@@ -5,7 +5,7 @@
     <Authors>Anexia;Platform Solutions</Authors>
     <Company>Anexia</Company>
     <Product>CloudLog</Product>
-    <Version>0.4.1</Version>
+    <Version>0.4.2</Version>
     <Description>CloudLog Serilog Sink</Description>
     <Copyright>Anexia</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,6 +13,8 @@
     <PackageProjectUrl>https://www.anexia-it.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/anexia-it/serilog-sinks-cloudlog</RepositoryUrl>
     <PackageTags>cloudlog serilog logging</PackageTags>
+    <PackageLicenseUrl>https://github.com/anexia-it/serilog-sinks-cloudlog/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>Now honoring Serilog Reliability standards and no longer throwing an exception when the logger can not be configured.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
