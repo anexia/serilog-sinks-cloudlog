@@ -15,7 +15,15 @@
     <PackageTags>cloudlog serilog logging</PackageTags>
     <PackageLicenseUrl>https://github.com/anexia-it/serilog-sinks-cloudlog/blob/master/LICENSE</PackageLicenseUrl>
     <PackageReleaseNotes>Now honoring Serilog Reliability standards and no longer throwing an exception when the logger can not be configured.</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Anexia.BDP.CloudLog" Version="0.4.0" />
