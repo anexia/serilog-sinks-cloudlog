@@ -1,4 +1,8 @@
-# serilog-sinks-cloudlog
+serilog-sinks-cloudlog
+===============
+[![Nuget](https://img.shields.io/nuget/v/Serilog.Sinks.CloudLog)](https://www.nuget.org/packages/Serilog.Sinks.CloudLog)
+[![Test status](https://github.com/anexia-it/serilog-sinks-cloudlog/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/anexia-it/dotnet-cloudlog/actions/workflows/test.yml)
+
 Serilog Sink for Anexia CloudLog
 
 ### Getting started
@@ -18,3 +22,11 @@ Log.Logger = new LoggerConfiguration()
     
 Log.Information("Hello CloudLog!");
 ```
+
+# Supported versions
+
+|          | Supported |
+|----------|-----------|
+| .Net 5.0 | ✓         |
+| .Net 6.0 | ✓         |
+| .Net 7.0 | ✓         |

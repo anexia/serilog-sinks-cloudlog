@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Serilog.Events;
-using Serilog.Formatting.Json;
 using Serilog.Sinks.PeriodicBatching;
 using Serilog.Debugging;
 using Anexia.BDP.CloudLog;
@@ -12,30 +11,23 @@ namespace Serilog.Sinks.CloudLog
 {
     public class CloudLogSink : PeriodicBatchingSink
     {
-        private Client client;
-        private CloudLogJsonFormatter formatter;
+        private const int BatchSize = 50;
+        private const int Period = 1;
 
-        const int batchSize = 50;
-        const int period = 1;
+        private readonly Client _client;
+        private readonly CloudLogJsonFormatter _formatter;
 
-        public CloudLogSink(string index, string caFile, string certFile, string keyFile, string keyPassword = "") : base(batchSize, TimeSpan.FromSeconds(period))
+        public CloudLogSink(string index, string token)
+            : base(new BatchedCloudLogEventSink(index, token), new PeriodicBatchingSinkOptions()
+            {
+                BatchSizeLimit = BatchSize,
+                QueueLimit = Period
+            })
         {
             try
             {
-                client = new Client(index, caFile, certFile, keyFile, keyPassword);
-                Init();
-            }
-            catch (Exception exception)
-            {
-                SelfLog.WriteLine("Unable to create CloudLogSink for index {0}: {1}", index, exception);
-            }
-        }
-
-        public CloudLogSink(string index, string token) : base(batchSize, TimeSpan.FromSeconds(period))
-        {
-            try
-            {
-                client = new Client(index, token);
+                _client = new Client(index, token);
+                _formatter = new CloudLogJsonFormatter();
                 Init();
             }
             catch (Exception exception)
@@ -46,8 +38,7 @@ namespace Serilog.Sinks.CloudLog
 
         private void Init()
         {
-            formatter = new CloudLogJsonFormatter();
-            client.SetClientType("dotnet-client-serilog");
+            _client.SetClientType("dotnet-client-serilog");
         }
 
         protected override void EmitBatch(IEnumerable<LogEvent> events)
@@ -55,9 +46,15 @@ namespace Serilog.Sinks.CloudLog
             foreach (var e in events)
             {
                 var sw = new StringWriter();
-                formatter.Format(e, sw);
-                client.PushEvent(sw.ToString());
+                _formatter.Format(e, sw);
+                _client.PushEvent(sw.ToString());
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _client.Dispose();
         }
     }
 }
