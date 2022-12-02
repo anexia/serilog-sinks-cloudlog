@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		README.md = README.md
 		CHANGELOG.md = CHANGELOG.md
 		.github\workflows\test.yml = .github\workflows\test.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.CloudLog.Test", "Serilog.Sinks.CloudLog.Test\Serilog.Sinks.CloudLog.Test.csproj", "{0027E24E-7766-463C-B00C-D7171BBE22AF}"

@@ -4,23 +4,25 @@
     <Authors>Anexia;Platform Solutions</Authors>
     <Company>Anexia</Company>
     <Product>CloudLog</Product>
-    <Version>0.4.2</Version>
     <Description>CloudLog Serilog Sink</Description>
     <Copyright>Anexia</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://secure.gravatar.com/avatar/9d6ad2f4979c38de18f29cb2ba8c4c3e?s=256</PackageIconUrl>
-    <PackageProjectUrl>https://www.anexia-it.com</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/anexia-it/serilog-sinks-cloudlog</RepositoryUrl>
+    <PackageProjectUrl>https://www.anexia.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anexia/serilog-sinks-cloudlog</RepositoryUrl>
     <PackageTags>cloudlog serilog logging</PackageTags>
-    <PackageLicenseUrl>https://github.com/anexia-it/serilog-sinks-cloudlog/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Now honoring Serilog Reliability standards and no longer throwing an exception when the logger can not be configured.</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/anexia/serilog-sinks-cloudlog/blob/master/LICENSE</PackageLicenseUrl>
     <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Anexia.BDP.CloudLog" Version="0.4.0" />
+    <PackageReference Include="Anexia.BDP.CloudLog" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="3.1.0" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

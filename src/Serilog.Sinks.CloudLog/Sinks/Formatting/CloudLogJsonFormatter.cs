@@ -6,11 +6,11 @@ using Serilog.Formatting;
 using Serilog.Formatting.Json;
 using Serilog.Parsing;
 
-namespace Serilog.Sinks.CloudLog.Formatting
+namespace Serilog.Sinks.CloudLog.Sinks.Formatting
 {
-    class CloudLogJsonFormatter : ITextFormatter
+    public class CloudLogJsonFormatter : ITextFormatter
     {
-        readonly JsonValueFormatter _valueFormatter;
+        private readonly JsonValueFormatter _valueFormatter;
 
         /// <summary>
         /// Construct a <see cref="CloudLogJsonFormatter"/>, optionally supplying a formatter for
@@ -39,7 +39,7 @@ namespace Serilog.Sinks.CloudLog.Formatting
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
         /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue"/>s on the event.</param>
-        public static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
+        private static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
         {
             if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
             if (output == null) throw new ArgumentNullException(nameof(output));
@@ -52,7 +52,7 @@ namespace Serilog.Sinks.CloudLog.Formatting
             output.Write(",\"message\":");
             JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Render(logEvent.Properties), output);
 
-            var tokensWithFormat = logEvent.MessageTemplate.Tokens
+            _ = logEvent.MessageTemplate.Tokens
                 .OfType<PropertyToken>()
                 .Where(pt => pt.Format != null);
 

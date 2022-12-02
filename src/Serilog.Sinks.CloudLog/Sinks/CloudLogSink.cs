@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Serilog.Events;
-using Serilog.Sinks.PeriodicBatching;
-using Serilog.Debugging;
-using Anexia.BDP.CloudLog;
 using System.IO;
-using Serilog.Sinks.CloudLog.Formatting;
+using System.Net.Http;
+using Anexia.BDP.CloudLog;
+using Serilog.Debugging;
+using Serilog.Events;
+using Serilog.Sinks.CloudLog.Sinks.Formatting;
+using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.CloudLog
+namespace Serilog.Sinks.CloudLog.Sinks
 {
     public class CloudLogSink : PeriodicBatchingSink
     {
@@ -17,16 +18,16 @@ namespace Serilog.Sinks.CloudLog
         private readonly Client _client;
         private readonly CloudLogJsonFormatter _formatter;
 
-        public CloudLogSink(string index, string token)
-            : base(new BatchedCloudLogEventSink(index, token), new PeriodicBatchingSinkOptions()
+        public CloudLogSink(string index, string token, Func<string, HttpClient> createClient)
+            : base(new BatchedCloudLogEventSink(index, token, createClient(nameof(BatchedCloudLogEventSink))), new PeriodicBatchingSinkOptions()
             {
                 BatchSizeLimit = BatchSize,
-                QueueLimit = Period
+                Period =  TimeSpan.FromSeconds(Period),
             })
         {
             try
             {
-                _client = new Client(index, token);
+                _client = new Client(index, token, createClient(nameof(CloudLogSink)));
                 _formatter = new CloudLogJsonFormatter();
                 Init();
             }
@@ -34,6 +35,16 @@ namespace Serilog.Sinks.CloudLog
             {
                 SelfLog.WriteLine("Unable to create CloudLogSink for index {0}: {1}", index, exception);
             }
+        }
+
+        public CloudLogSink(string index, string token)
+            : this(index, token, (_) => new HttpClient())
+        {
+        }
+        
+        public CloudLogSink(string index, string token, IHttpClientFactory clientFactory)
+            : this(index, token, clientFactory.CreateClient)
+        {
         }
 
         private void Init()

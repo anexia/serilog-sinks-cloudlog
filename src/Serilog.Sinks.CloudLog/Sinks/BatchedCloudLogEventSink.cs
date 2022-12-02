@@ -1,30 +1,26 @@
-// // --------------------------------------------------------------------------------------------
-// //  <copyright file = "BatchedCloudLogEventSink.cs" company = "ANEXIA® Internetdienstleistungs GmbH">
-// //  Copyright (c) ANEXIA® Internetdienstleistungs GmbH.All rights reserved.
-// //  </copyright>
-// // --------------------------------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Anexia.BDP.CloudLog;
 using Serilog.Debugging;
 using Serilog.Events;
-using Serilog.Sinks.CloudLog.Formatting;
+using Serilog.Sinks.CloudLog.Sinks.Formatting;
 using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.CloudLog
+namespace Serilog.Sinks.CloudLog.Sinks
 {
     public sealed class BatchedCloudLogEventSink : IBatchedLogEventSink, IDisposable
     {
         private readonly Client _client;
         private readonly CloudLogJsonFormatter _formatter;
-        public BatchedCloudLogEventSink(string index, string token)
+
+        public BatchedCloudLogEventSink(string index, string token, HttpClient client)
         {
             try
             {
-                _client = new Client(index, token);
+                _client = new Client(index, token, client);
                 _formatter = new CloudLogJsonFormatter();
                 Init();
             }
@@ -32,8 +28,8 @@ namespace Serilog.Sinks.CloudLog
             {
                 SelfLog.WriteLine("Unable to create CloudLogSink for index {0}: {1}", index, exception);
             }
-            
         }
+
         public Task EmitBatchAsync(IEnumerable<LogEvent> events)
         {
             var task = default(Task);
@@ -42,10 +38,14 @@ namespace Serilog.Sinks.CloudLog
                 var sw = new StringWriter();
                 _formatter.Format(e, sw);
                 if (task != null)
-                    task.ContinueWith(_client.PushEvent(sw.ToString()));
+                    task = task.ContinueWith(
+                        (_, swInner) => _client.PushEvent(swInner.ToString()),
+                        sw,
+                        TaskScheduler.Current);
                 else
                     task = _client.PushEvent(sw.ToString());
             }
+
             return task;
         }
 
@@ -54,14 +54,14 @@ namespace Serilog.Sinks.CloudLog
             return Task.CompletedTask;
         }
 
-        private void Init()
-        {
-            _client.SetClientType("dotnet-client-serilog");
-        }
-
         public void Dispose()
         {
             _client.Dispose();
+        }
+
+        private void Init()
+        {
+            _client.SetClientType("dotnet-client-serilog");
         }
     }
 }
