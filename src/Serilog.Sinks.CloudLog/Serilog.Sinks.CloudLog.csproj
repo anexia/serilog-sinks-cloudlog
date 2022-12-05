@@ -14,6 +14,7 @@
     <PackageLicenseUrl>https://github.com/anexia/serilog-sinks-cloudlog/blob/master/LICENSE</PackageLicenseUrl>
     <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
