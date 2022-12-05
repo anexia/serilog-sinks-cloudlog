@@ -44,32 +44,26 @@ namespace Serilog.Sinks.CloudLog.Sinks.Formatting
             if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
             if (output == null) throw new ArgumentNullException(nameof(output));
             if (valueFormatter == null) throw new ArgumentNullException(nameof(valueFormatter));
-
             output.Write("{\"timestamp\":");
-            output.Write((long)logEvent.Timestamp.UtcDateTime.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds);
+            output.Write(logEvent.Timestamp.ToUnixTimeMilliseconds());
             output.Write(",\"template\":");
             JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Text, output);
             output.Write(",\"message\":");
             JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Render(logEvent.Properties), output);
-
-            _ = logEvent.MessageTemplate.Tokens
-                .OfType<PropertyToken>()
-                .Where(pt => pt.Format != null);
-
+            
             if (logEvent.Level != LogEventLevel.Information)
             {
                 output.Write(",\"level\":\"");
                 output.Write(logEvent.Level);
                 output.Write('\"');
             }
-
+            
             if (logEvent.Exception != null)
             {
                 output.Write(",\"exception\":");
                 JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.ToString(), output);
             }
-
-
+            
             if (logEvent.Properties.Count != 0)
             {
                 output.Write(",\"properties\":{");
@@ -82,10 +76,10 @@ namespace Serilog.Sinks.CloudLog.Sinks.Formatting
                     output.Write(':');
                     valueFormatter.Format(property.Value, output);
                 }
-
+            
                 output.Write('}');
             }
-
+            
             output.Write('}');
         }
 
